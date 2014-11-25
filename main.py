@@ -1,3 +1,4 @@
+from __future__ import print_function
 from __future__ import unicode_literals
 
 import os
@@ -7,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 import requests
 import pprint
 
-from strex.parse import parse
+from strex.parse import Parser
 
 sites = [{
     'name': 'Reuters home page',
@@ -49,7 +50,8 @@ sites = [{
 def main():
     for site in sites:
         content = requests.get(site['url'])
-        res = parse(content.text, site['structure'], site['options'])
+        st = Parser(site['options'], 'xpath')
+        res = st.parse(site['structure'], content.text)
         print(site['name'] + ' (' + site['url'] + ')')
         pprint.pprint(res)
         print('')
